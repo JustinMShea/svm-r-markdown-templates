@@ -6,65 +6,12 @@ institute: Department of Political Science
 titlegraphic: /Dropbox/teaching/clemson-academic.png
 fontsize: 10pt
 output:
- beamer_presentation:
-    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
-    keep_tex: true
-# toc: true
-    slide_level: 2
  ioslides_presentation:
     smaller: true
     logo: ~/Dropbox/teaching/clemson-paw-transparent.png
-make149: true
+    css: ../svm-ioslides-css.css    
 ---
 
-<style>
-slides > slide.backdrop {
-  background: white;
-  border-bottom: 0px;
-  box-shadow: 0 0 0;
-}
-
-
-slides > slide {
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  border-bottom: 3px solid  #F66733;
-  box-shadow:  0 3px 0 #522D80;
-
-}
-
-.title-slide hgroup h1 {
-  color: #522D80;
-}
-
-
-
-h2 {
-
-  color: #522D80;
-}
-
-slides > slide.dark {
-  background: #522D80 !important;
-  border-bottom: 0;
-  box-shadow: 0 0 0;
-}
-
-.segue h2 {
-  color: white;
-}
-
-slides > slide.title-slide {
-  border-bottom: 0;
-  box-shadow: 0 0 0;
-}
-
-ol, ul {
-
-padding-bottom: 10px;
-
-}
-
-</style>
 
 
 
@@ -106,6 +53,7 @@ Billy Ocean released "Caribbean Queen" in 1984.
 
 "Caribbean Queen" is about the poor execution of Operation Urgent Fury.
 
+- Coordination problems plagued its execution from the start.
 - Echoed JCS chairman David Jones' frustrations with military establishment.
 
 Billy Ocean is advocating for what became the Goldwater-Nichols Act.

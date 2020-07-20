@@ -1,4 +1,4 @@
-\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{letter}
 $if(fontfamily)$
 \usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
 $else$
@@ -24,6 +24,9 @@ $endif$
     \usepackage{fontspec}
   \fi
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+$for(fontfamilies)$
+  \newfontfamily{$fontfamilies.name$}[$fontfamilies.options$]{$fontfamilies.font$}
+$endfor$
 $if(euro)$
   \newcommand{\euro}{€}
 $endif$
@@ -54,8 +57,30 @@ $endif$
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
-
-
+\usepackage[unicode=true]{hyperref}
+$if(colorlinks)$
+\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+$endif$
+\hypersetup{
+$if(title-meta)$
+            pdftitle={$title-meta$},
+$endif$
+$if(author-meta)$
+            pdfauthor={$author-meta$},
+$endif$
+$if(keywords)$
+            pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+$endif$
+$if(colorlinks)$
+            colorlinks=true,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$Maroon$endif$,
+            citecolor=$if(citecolor)$$citecolor$$else$Blue$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$Blue$endif$,
+$else$
+            pdfborder={0 0 0},
+$endif$
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 $if(lang)$
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[shorthands=off,$for(babel-otherlangs)$$babel-otherlangs$,$endfor$main=$babel-lang$]{babel}
@@ -75,8 +100,7 @@ $if(natbib)$
 \bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
 $endif$
 $if(biblatex)$
-\usepackage$if(biblio-style)$[style=$biblio-style$]$endif${biblatex}
-$if(biblatexoptions)$\ExecuteBibliographyOptions{$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$}$endif$
+\usepackage[$if(biblio-style)$style=$biblio-style$,$endif$$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$]{biblatex}
 $for(bibliography)$
 \addbibresource{$bibliography$}
 $endfor$
@@ -96,6 +120,8 @@ $if(verbatim-in-note)$
 $endif$
 $if(tables)$
 \usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
 $endif$
 $if(graphics)$
 \usepackage{graphicx,grffile}
@@ -119,14 +145,18 @@ $if(strikeout)$
 $endif$
 $if(indent)$
 $else$
-
-
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
 $endif$
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 $if(numbersections)$
-\setcounter{secnumdepth}{5}
+\setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
 $else$
 \setcounter{secnumdepth}{0}
 $endif$
@@ -159,100 +189,86 @@ $if(dir)$
   \newenvironment{LTR}{\beginL}{\endL}
 \fi
 $endif$
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+$if(signature)$
+\usepackage{graphicx,grffile}
+\signature{$if(signature-before)$\vspace*{$signature-before$}$endif$\includegraphics{$signature$}$if(author)$\\$if(signature-after)$\vspace*{$signature-after$}$endif$$for(author)$$author$$sep$\\$endfor$$endif$}
+$else$
+$if(author)$
+\signature{$for(author)$$author$$sep$\\$endfor$}
+$endif$
+$endif$
+
+$if(date)$
+\date{$date$}
+$endif$
+
 $for(header-includes)$
 $header-includes$
 $endfor$
+\address{$for(return-address)$$return-address$$sep$\\$endfor$}
 
-% Now begins the stuff that I added.
-% ----------------------------------
-
-% Custom section fonts
-\usepackage{sectsty}
-\sectionfont{\rmfamily\mdseries\large\bf}
-\subsectionfont{\rmfamily\mdseries\normalsize\scshape}
-
-
-% Make lists without bullets
-\renewenvironment{itemize}{
-  \begin{list}{}{
-    \setlength{\leftmargin}{1.5em}
-  }
-}{
-  \end{list}
-}
-
-
-% Make parskips rather than indent with lists.
-\usepackage{parskip}
-\usepackage{titlesec}
-\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
-\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
-
-% Use fontawesome. Note: you'll need TeXLive 2015. Update.
-$if(fontawesome)$\usepackage{fontawesome}$endif$
-
-% Fancyhdr, as I tend to do with these personal documents.
-\usepackage{fancyhdr,lastpage}
-\pagestyle{fancy}
-\renewcommand{\headrulewidth}{0.0pt}
-\renewcommand{\footrulewidth}{0.0pt}
-\lhead{}
-\chead{}
-\rhead{}
-\lfoot{
-\cfoot{\scriptsize  $author-meta$ - $title$ }}
-\rfoot{\scriptsize \thepage/{\hypersetup{linkcolor=black}\pageref{LastPage}}}
-
-% Always load hyperref last.
-\usepackage{hyperref}
-$if(colorlinks)$
-\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+$if(blockquote)$
+\usepackage{mdframed} % color is loaded by mdframed
+\definecolor{greyborder}{RGB}{221,221,221}
+\definecolor{greytext}{RGB}{119,119,119}
+\newmdenv[rightline=false,bottomline=false,topline=false,linewidth=3pt,linecolor=greyborder,skipabove=\parskip]{blockquote}
+\renewenvironment{quote}{\begin{blockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
+\item\relax\color{greytext}\ignorespaces}{\unskip\unskip\endlist\end{blockquote}}
 $endif$
 
-\hypersetup{unicode=true,
-$if(title-meta)$
-            pdftitle={$if(author-meta)$$author-meta$: $endif$ $title-meta$ (Curriculum Vitae)},
+$if(letterhead)$
+\usepackage[dvipsnames]{color}
+\usepackage{wallpaper}
+\ThisULCornerWallPaper{1}{$letterhead$}
 $endif$
-$if(author-meta)$
-            pdfauthor={$author-meta$},
-$endif$
-$if(keywords)$
-            pdfkeywords={$for(keywords)$$keywords$$sep$; $endfor$},
-$endif$
-            colorlinks=true,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$Maroon$endif$,
-            citecolor=$if(citecolor)$$citecolor$$else$Blue$endif$,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$Blue$endif$,
-            breaklinks=true, bookmarks=true}
-\urlstyle{same}  % don't use monospace font for urls
-
-% Make AP style (kinda) dates for the updated/today field
-
-\usepackage{datetime}
-\newdateformat{apstylekinda}{%
-  \shortmonthname[\THEMONTH]. \THEDAY, \THEYEAR}
 
 \begin{document}
 
+$for(include-before)$
+$include-before$
 
-\centerline{\huge \bf $author$}
+$endfor$
+$if(toc)$
+{
+$if(colorlinks)$
+\hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
+$endif$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
 
-\vspace{2 mm}
+\begin{letter}{$for(address)$$address$$sep$\\$endfor$}
 
-\hrule
-
-\vspace{2 mm}
-
-$if(jobtitle)$\moveleft.5\hoffset\centerline{$jobtitle$}$endif$
-$if(address)$\moveleft.5\hoffset\centerline{$address$}$endif$
-\moveleft.5\hoffset\centerline{ $if(email)$$if(fontawesome)$\faEnvelopeO \hspace{1 mm}$else$\emph{E-mail:}$endif$ \href{mailto:}{\tt $email$} \hspace{1 mm}$endif$ $if(phone)$$if(fontawesome)$ \faPhone \hspace{1 mm}$else$\emph{Phone:}$endif$  $phone$  \hspace{1 mm} $endif$ $if(github)$$if(fontawesome)$\faGithub \hspace{1 mm}$else$\emph{Github:}$endif$ \href{http://github.com/$github$}{\tt $github$} \hspace{1 mm} $endif$  $if(twitter)$$if(fontawesome)$\faTwitter \hspace{1 mm}$else$\emph{Twitter:}$endif$ \href{https:/twitter.com/$twitter$}{\tt $twitter$} \hspace{1 mm} $endif$ $if(osf)$$if(fontawesome)$\faUnlock \hspace{1 mm}$else$\emph{osf:}$endif$ \href{https:/osf.io/$osf$}{\tt osf.io/$osf$} \hspace{1 mm} $endif$ $if(web)$$if(fontawesome)$\faGlobe \hspace{1 mm}$else$\emph{Web:}$endif$ \href{http://$web$}{\tt $web$}  $endif$ $if(updated)$ | \emph{Updated:} \apstylekinda\today$endif$} 
-
-\vspace{2 mm}
-
-\hrule
-
+$if(opening)$
+\opening{$opening$}
+$endif$
 
 $body$
+
+$if(closing)$
+$if(closing-indentation)$
+\longindentation=$closing-indentation$
+$endif$
+\closing{$closing$}
+$endif$
+$if(encl)$
+\encl{$for(encl)$$encl$$sep$\\$endfor$}
+$endif$
+$if(cc)$
+\cc{$for(cc)$$cc$$sep$\\$endfor$}
+$endif$
+$if(ps)$
+\ps{$ps$}
+$endif$
+
+\end{letter}
 
 $if(natbib)$
 $if(bibliography)$

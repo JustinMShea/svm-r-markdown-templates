@@ -5,7 +5,11 @@ output:
     keep_tex: true
     fig_caption: true
     latex_engine: pdflatex
-    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-ms.tex
+    template: ../svm-latex-ms.tex
+bibliography: master.bib
+header-includes:
+  -  \usepackage{hyperref}
+biblio-style: apsr
 title: "A Pandoc Markdown Article Starter and Template"
 thanks: "Replication files are available on the author's Github account (http://github.com/svmiller). **Current version**: `r format(Sys.time(), '%B %d, %Y')`; **Corresponding author**: svmille@clemson.edu."
 author:
@@ -18,10 +22,20 @@ geometry: margin=1in
 fontfamily: mathpazo
 fontsize: 11pt
 # spacing: double
-bibliography: ~/Dropbox/master.bib
-biblio-style: apsr
 endnote: no
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE,
+                      message=FALSE, warning=FALSE,
+                      fig.path='figs/',
+                      cache.path = '_cache/',
+                      fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      })
+```
+
 
 # Introduction
 
@@ -62,7 +76,7 @@ geometry: margin=1in
 fontfamily: mathpazo
 fontsize: 11pt
 # spacing: double
-bibliography: ~/Dropbox/master.bib
+bibliography: "`r paste0(Sys.getenv('HOME'),'/Dropbox/master.bib')`"
 biblio-style: apsr
 ---
 ```
@@ -170,59 +184,38 @@ Within that code display, I enter my R code like this.
 
 
 ```{r, eval=FALSE, tidy = TRUE}
-suppressMessages(library(Zelig))
-suppressMessages(library(arm))
-suppressMessages(library(coefplot))
+library(stevemisc)
+data(uniondensity)
 
-data(voteincome)
+M1 <- lm(union ~ left + size + concen, data=uniondensity)
 
-voteincome$z.age <- arm::rescale(voteincome$age)
-voteincome$z.education <- arm::rescale(voteincome$education)
-voteincome$z.income <- arm::rescale(voteincome$income)
-
-M1 <- glm(vote ~ z.age + female + z.education + z.income,
-            data=voteincome, family=binomial)
-
+library(arm)
 coefplot(M1)
+
 ```
 
 The implications for workflow are faily substantial. Authors can rather quickly display the code they used to run the analyses in the document itself (likely in the appendix). As such, there's little guesswork for reviewers and editors in understanding what the author did in the analyses reported in the manuscript.
 
 It doesn't end there. In fact, here's what happens when `eval=FALSE` is omitted or changed to `eval=TRUE`. Now, the code runs within R. Observe.
 
-```{r, eval=TRUE, tidy = TRUE, cache=FALSE, fig.cap="A Coefficient Plot"}
-suppressMessages(library(Zelig))
-suppressMessages(library(arm))
+```{r, eval=TRUE, tidy = TRUE, cache=FALSE, fig.cap="A Coefficient Plot", message=F, warning=F}
+library(stevemisc)
+data(uniondensity)
 
+M1 <- lm(union ~ left + size + concen, data=uniondensity)
 
-data(voteincome)
-
-voteincome$z.age <- arm::rescale(voteincome$age)
-voteincome$z.education <- arm::rescale(voteincome$education)
-voteincome$z.income <- arm::rescale(voteincome$income)
-
-M1 <- glm(vote ~ z.age + female + z.education + z.income,
-            data=voteincome, family=binomial)
-
-arm::coefplot(M1)
+library(arm)
+coefplot(M1)
 ```
 
 To get `knitr` to present the results of a table, add `results="asis"` to the brackets to start the R code chunk. The ensuing output will look like this (though the table may come on the next page).
 
-```{r, eval=TRUE, tidy = TRUE, size="small", cache=FALSE, results="asis"}
-suppressMessages(library(Zelig))
-suppressMessages(library(stargazer))
-suppressMessages(library(arm))
+```{r, eval=TRUE, tidy = TRUE, size="small", cache=FALSE, results="asis", message=F, warning=F}
+library(stevemisc)
+data(uniondensity)
+library(stargazer)
 
-data(voteincome)
-
-voteincome$z.age <- arm::rescale(voteincome$age)
-voteincome$z.education <- arm::rescale(voteincome$education)
-voteincome$z.income <- arm::rescale(voteincome$income)
-
-
-M1 <- glm(vote ~ z.age + female + z.education + z.income,
-            data=voteincome, family=binomial)
+M1 <- lm(union ~ left + size + concen, data=uniondensity)
 
 stargazer(M1, title="A Handsome Table", header=FALSE)
 ```

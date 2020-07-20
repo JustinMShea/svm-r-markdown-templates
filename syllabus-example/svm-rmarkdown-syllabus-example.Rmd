@@ -4,7 +4,7 @@ output:
     keep_tex: true
     fig_caption: yes
     latex_engine: pdflatex
-    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-syllabus.tex
+    template: ../svm-latex-syllabus.tex
 geometry: margin=1in
 
 title: "POSC 0000: A Class with an R Markdown Syllabus"
@@ -24,9 +24,17 @@ header-includes:
    - \linespread{1.05}
 ---
 
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='_cache/')
+knitr::opts_chunk$set(warning=F, message=F)
+# knitr::opts_knit$get(kable.force.latex = TRUE)
+```
 
 
-```{r setup, include=FALSE}
+
+```{r dates_bib, include=FALSE}
 knitr::opts_chunk$set(cache=FALSE, dev='pdf')
 mon <- as.Date("2016-08-15")
 # fri <- as.Date("2016-01-08")
@@ -44,7 +52,7 @@ advdate <- function(obj, adv) {
 library(RefManageR)
 # library(knitcitations)
 # library(rcrossref)
-bib <- ReadBib("~/Dropbox/master.bib")
+bib <- ReadBib("master.bib")
 myopts <- BibOptions(bib.style = "authoryear", style="latex", first.inits=FALSE, max.names = 20)
 
 ```
@@ -88,14 +96,7 @@ I will detail the policy for this course below. Basically, don't cheat and try t
 
 ```{r, include=FALSE}
 options(scipen=999)
-Attend <- read.csv("~/Dropbox/teaching/attendance-grades-relationship.csv")
-Attend$rgrade <- round(Attend$grade, 0)
-Attend$perattend <- (Attend$attendance/Attend$max)*100
-Attend <- subset(Attend, !is.na(rgrade))
-Attend$name <- as.numeric(Attend$name)
-Attend$id <- as.numeric(Attend$id)
-Attend$term <- as.numeric(Attend$term)
-Attend$class <- as.numeric(as.factor(Attend$class))
+Attend <- read.csv("attend-grade-relationships.csv")
 M1 <- lm(rgrade ~ perattend, Attend)
 M2 <- lm(rgrade ~ perattend, data=subset(Attend, perattend >= 75))
 library(broom)
@@ -178,7 +179,7 @@ bib[author = "vasquez"]
 
 ##  `r advdate(mon, 3)`: Read the Nos. 90-97 Items in My Bib
 
-```{r, echo = FALSE, results="asis"} 
+```{r, echo = FALSE, results="asis", eval=F} 
 bib[90:97]
 ``` 
 
@@ -186,7 +187,7 @@ bib[90:97]
 
 ##  `r advdate(mon, 4)`: Read Bib Item No. 120
 
-```{r, echo = FALSE, results="asis"} 
+```{r, echo = FALSE, results="asis", eval=F} 
 bib[120]
 ``` 
 
@@ -194,7 +195,7 @@ bib[120]
 
 ##  `r advdate(mon, 5)`: The Fourth Topic with Bib Item No. 510
 
-```{r, echo = FALSE, results="asis"} 
+```{r, echo = FALSE, results="asis", eval=F} 
 bib[510]
 ``` 
 

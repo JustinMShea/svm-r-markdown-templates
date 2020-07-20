@@ -26,6 +26,7 @@ $endif$
 %\setlength{\parindent}{0pt}
 %\setlength{\parskip}{6pt plus 2pt minus 1pt}
 %\setlength{\emergencystretch}{3em}  % prevent overfull lines 
+\setlength{\parskip}{12pt} 
 
 \usepackage[$if(fontenc)$$fontenc$$else$T1$endif$]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -34,14 +35,14 @@ $endif$
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{lastpage}
-\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrulewidth}{0.0pt}
 \renewcommand{\footrulewidth}{0.0pt} 
-\lhead{\footnotesize \textbf{$author$}}
+
+\lhead{}
 \chead{}
-\rhead{\footnotesize \emph{$title$}}
-%\lfoot{}
-%\cfoot{\small \thepage/\pageref*{LastPage}}
-%\rfoot{}
+
+\rhead{}
+
 
 \fancypagestyle{firststyle}
 {
@@ -59,6 +60,7 @@ $endif$
 \usepackage{titlesec}
 
 \titleformat*{\subsection}{\itshape}
+\titleformat*{\subsubsection}{\itshape}
 
 \makeatletter
 \@ifpackageloaded{hyperref}{}{%
@@ -78,9 +80,9 @@ $endif$
 \makeatother
 \hypersetup{breaklinks=true,
             bookmarks=true,
-            pdfauthor={$for(author)$$author.name$ ($author.affiliation$)$sep$ and $endfor$},
+            pdfauthor={$from$},
              pdfkeywords = {$if(keywords)$$keywords$$endif$},  
-            pdftitle={$title$$if(subtitle)$: $subtitle$$endif$},
+            pdftitle={$subject$},
             colorlinks=true,
             citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
             urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
@@ -136,45 +138,56 @@ $if(listings)$
 \usepackage{listings}
 $endif$
 
-\usepackage{setspace}
+\usepackage{setspace} 
 
-$if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+$if(graphics)$
+\usepackage[export]{adjustbox}
 $endif$
-$if(subtitle)$
-\providecommand{\subtitle}[1]{}
-\subtitle{$subtitle$}
-$endif$
-$if(author)$
-\author{$for(author)$$author$$sep$ \and $endfor$}
-$endif$
-\date{$date$}
 
-
-\def\citeapos#1{\citeauthor{#1}'s (\citeyear{#1})}
-
-% header includes!
 $for(header-includes)$
 $header-includes$
 $endfor$
 
 
+
+\def\citeapos#1{\citeauthor{#1}'s (\citeyear{#1})}
 \begin{document}  
 
 
 
 \thispagestyle{plain} 
+% Here's where it starts to differ from my statement template ----
 
-\begin{flushleft}\Large \bf $title$  \end{flushleft}
-	\vspace{1 mm}   
-$author$ \\
-\emph{$affiliation$} \\
-$if(email)$\texttt{$email$}$else$TBD$endif$   \\
+$if(graphics)$$if(logo)$\Oldincludegraphics[width=$if(width)$$width$$else$0.3$endif$\textwidth, $if(logoposition)$$logoposition$$else$right$endif$]{$logo$}$else$$endif$$endif$
 
-% \blankline 
-  
+
+
+
+$if(memorandum)$
+\begin{center} 
+\Large \bfseries{\scshape{Memorandum}}
+\end{center}
+$endif$
+
+\setlength{\tabcolsep}{1em}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}ll@{}}
+\textbf{FROM:} & $from$ \\
+% & \\
+\textbf{TO:} & $to$ \\
+% & \\
+\textbf{SUBJECT:} & $subject$ \\
+% & \\
+\textbf{DATE:} & $date$ \\
+% & \\
+\end{tabular}
+
+\vspace{.5 em}
+
 
 \hrule
+
+
 
 \vspace{6 mm}
 	

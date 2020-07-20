@@ -13,6 +13,7 @@ $endif$
 
 
 
+
 \usepackage{abstract}
 \renewcommand{\abstractname}{}    % clear the title
 \renewcommand{\absnamepos}{empty} % originally center
@@ -63,17 +64,17 @@ $if(tables)$
 $endif$
 
 $if(graphics)$
-\usepackage{graphicx}
-% We will generate all images so they have a width \maxwidth. This means
-% that they will get their normal width if they fit onto the page, but
-% are scaled down if they would overflow the margins.
+\usepackage{graphicx,grffile}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
-\else\Gin@nat@width\fi}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \makeatother
-\let\Oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 $endif$
+
 
 $if(title)$
 \title{$title$$if(subtitle)$: $subtitle$$endif$ $if(anonymous)$$else$$if(thanks)$\thanks{$thanks$} $endif$$endif$ }
@@ -116,6 +117,18 @@ $endif$
 \newtheorem{hypothesis}{Hypothesis}
 \usepackage{setspace}
 
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% move the hyperref stuff down here, after header-includes, to allow for - \usepackage{hyperref}
+
 \makeatletter
 \@ifpackageloaded{hyperref}{}{%
 \ifxetex
@@ -123,7 +136,7 @@ $endif$
               unicode=false, % unicode breaks when used with xetex
               xetex]{hyperref}
 \else
-  \PassOptionsToPackage{hyphens}{url}\usepackage[unicode=true]{hyperref}
+  \PassOptionsToPackage{hyphens}{url}\usepackage[draft,unicode=true]{hyperref}
 \fi
 }
 
@@ -145,9 +158,7 @@ $endif$
             pdfborder={0 0 0}}
 \urlstyle{same}  % don't use monospace font for urls
 
-$for(header-includes)$
-$header-includes$
-$endfor$
+% Add an option for endnotes. -----
 
 $if(endnotes)$
 \usepackage{endnotes}
@@ -159,6 +170,14 @@ $endif$
 \providecommand{\tightlist}{%
 \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
+% add some other packages ----------
+
+% \usepackage{multicol}
+% This should regulate where figures float
+% See: https://tex.stackexchange.com/questions/2275/keeping-tables-figures-close-to-where-they-are-mentioned
+\usepackage[section]{placeins}
+
+
 \begin{document}
 	
 % \pagenumbering{arabic}% resets `page` counter to 1 
@@ -166,6 +185,8 @@ $endif$
 %\renewcommand*{\thepage}{$appendixletter$--\arabic{page}}
 %$endif$    
 
+$if(removetitleabstract)$
+$else$
 $if(title)$
 % \maketitle
 
@@ -219,7 +240,7 @@ $endif$
 
 $endif$
 
-\vskip 6.5pt
+\vskip -8.5pt
 
 $if(toc)$
 {
@@ -229,7 +250,12 @@ $if(toc)$
 }
 $endif$
 
-\noindent $if(anonymous)$\doublespacing$else$$if(spacing)$\$spacing$spacing$endif$$endif$ $body$
+$endif$ % removetitleabstract
+
+\noindent $if(anonymous)$\doublespacing$else$$if(spacing)$\$spacing$spacing$endif$$endif$ 
+$if(twocol)$ \begin{multicols}{2}$endif$
+$body$
+$if(twocol)$ \end{multicols}$endif$
 
 $if(endnotes)$
 \newpage

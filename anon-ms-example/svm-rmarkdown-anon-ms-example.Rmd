@@ -5,7 +5,7 @@ output:
     keep_tex: true
     fig_caption: true
     latex_engine: pdflatex
-    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-anon-ms.tex
+    template: ../svm-latex-anon-ms.tex
 title: "An Example Title with a Really Long Title: Also a Subtitle"
 runhead: "A Running Head"
 thanks: "Replication files are available on the author's Github account (http://github.com/svmiller). **Current version**: `r format(Sys.time(), '%B %d, %Y')`; **Corresponding author**: svmille@clemson.edu."
@@ -18,7 +18,7 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 geometry: margin=1in
 fontfamily: mathpazo
 fontsize: 11pt
-bibliography: ~/Dropbox/master.bib
+bibliography: master.bib
 biblio-style: apsr
 indent: yes
 colorlinks: true
@@ -26,7 +26,7 @@ colorlinks: true
 
 # Introduction
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec felis placerat, suscipit risus eget, condimentum ex. Nunc laoreet mi nisi, eu volutpat orci porttitor at. Nunc a bibendum diam. Aenean condimentum, neque at gravida imperdiet, orci arcu laoreet risus, eu gravida erat leo et ante. Suspendisse tempor non eros nec vestibulum. Morbi cursus posuere nunc, semper dignissim mi lacinia non. Nunc sagittis ipsum in mattis volutpat. Morbi in mauris ut urna rhoncus pellentesque. Morbi hendrerit sodales metus, at placerat velit bibendum at. Etiam ut est id ligula hendrerit commodo et eget lorem. See my previous scholarship [@miller2013tdpi; @miller2016ieea; @miller2016etst].
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec felis placerat, suscipit risus eget, condimentum ex. Nunc laoreet mi nisi, eu volutpat orci porttitor at. Nunc a bibendum diam. Aenean condimentum, neque at gravida imperdiet, orci arcu laoreet risus, eu gravida erat leo et ante. Suspendisse tempor non eros nec vestibulum. Morbi cursus posuere nunc, semper dignissim mi lacinia non. Nunc sagittis ipsum in mattis volutpat. Morbi in mauris ut urna rhoncus pellentesque. Morbi hendrerit sodales metus, at placerat velit bibendum at. Etiam ut est id ligula hendrerit commodo et eget lorem. See my previous scholarship [@miller2013tdpi; @miller2017ieea; @miller2017etst; @miller2018etttc].
 
 Proin vitae metus at turpis aliquet pulvinar. Suspendisse potenti. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam tincidunt euismod mauris, pulvinar scelerisque nulla accumsan et. Praesent tempus ipsum varius enim eleifend, ut blandit arcu molestie. Vestibulum tempor est blandit ligula porta consequat. Praesent condimentum auctor ligula, ac pellentesque ante fringilla egestas. Praesent accumsan scelerisque eros nec mattis. Donec eget aliquet metus. Sed auctor, lacus mollis hendrerit lobortis, nisl felis vehicula libero, sed aliquet elit augue et eros.
 

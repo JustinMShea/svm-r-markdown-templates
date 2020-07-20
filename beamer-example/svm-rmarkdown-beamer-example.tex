@@ -1,39 +1,15 @@
-\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(handout)$handout,$endif$$if(beamer)$ignorenonframetext,$endif$$for(classoption)$$classoption$$sep$,$endfor$$if(make149)$,aspectratio=149$endif$]{$documentclass$}
-$if(theme)$
-\usetheme{$theme$}
-$endif$
-$if(colortheme)$
-\usecolortheme{$colortheme$}
-$endif$
-$if(fonttheme)$
-\usefonttheme{$fonttheme$}
-$endif$
-$if(mainfont)$
+\documentclass[10pt,ignorenonframetext,,aspectratio=149]{beamer}
 \usefonttheme{serif} % use mainfont rather than sansfont for slide text
-$endif$
-$if(innertheme)$
-\useinnertheme{$innertheme$}
-$endif$
-$if(outertheme)$
-\useoutertheme{$outertheme$}
-$endif$
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
 \setbeamercolor{caption name}{fg=normal text.fg}
-$if(fontfamily)$
-\usepackage[$fontfamilyoptions$]{$fontfamily$}
-$else$
 \usepackage{lmodern}
-$endif$
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[$if(fontenc)$$fontenc$$else$T1$endif$]{fontenc}
+  \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-$if(euro)$
-  \usepackage{eurosym}
-$endif$
 \else % if luatex or xelatex
   \ifxetex
     \usepackage{mathspec}
@@ -42,22 +18,7 @@ $endif$
   \fi
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
   \newcommand{\euro}{€}
-$if(mainfont)$
-    \setmainfont[$mainfontoptions$]{$mainfont$}
-$endif$
-$if(sansfont)$
-    \setsansfont[$sansfontoptions$]{$sansfont$}
-$endif$
-$if(monofont)$
-    \setmonofont[Mapping=tex-ansi$if(monofontoptions)$,$monofontoptions$$endif$]{$monofont$}
-$endif$
-$if(mathfont)$
-    \setmathfont(Digits,Latin,Greek)[$mathfontoptions$]{$mathfont$}
-$endif$
-$if(CJKmainfont)$
-    \usepackage{xeCJK}
-    \setCJKmainfont[$CJKoptions$]{$CJKmainfont$}
-$endif$
+    \setmainfont[]{Open Sans}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -66,49 +27,12 @@ $endif$
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-$if(lang)$
-\ifxetex
-  \usepackage{polyglossia}
-  \setmainlanguage[$polyglossia-lang.options$]{$polyglossia-lang.name$}
-$for(polyglossia-otherlangs)$
-  \setotherlanguage[$polyglossia-otherlangs.options$]{$polyglossia-otherlangs.name$}
-$endfor$
-\else
-  \usepackage[shorthands=off,$babel-lang$]{babel}
-\fi
-$endif$
-$if(natbib)$
-\usepackage{natbib}
-\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
-$endif$
-$if(biblatex)$
-\usepackage{biblatex}
-$for(bibliography)$
-\addbibresource{$bibliography$}
-$endfor$
-$endif$
-$if(listings)$
-\usepackage{listings}
-$endif$
-$if(lhs)$
-\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
-$endif$
-$if(highlighting-macros)$
-$highlighting-macros$
-$endif$
-$if(verbatim-in-note)$
-\usepackage{fancyvrb}
-\VerbatimFootnotes % allows verbatim text in footnotes
-$endif$
-$if(tables)$
 \usepackage{longtable,booktabs}
 \usepackage{caption}
 % These lines are needed to make table captions work with longtable:
 \makeatletter
 \def\fnum@table{\tablename~\thetable}
 \makeatother
-$endif$
-$if(graphics)$
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -118,7 +42,6 @@ $if(graphics)$
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-$endif$
 
 % Comment these out if you don't want a slide with just the
 % part/section/subsection/subsubsection title:
@@ -138,54 +61,15 @@ $endif$
   \frame{\subsectionpage}
 }
 
-$if(links-as-notes)$
-% Make links footnotes instead of hotlinks:
-\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
-$endif$
-$if(strikeout)$
-\usepackage[normalem]{ulem}
-% avoid problems with \sout in headers with hyperref:
-\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
-$endif$
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-$if(numbersections)$
-\setcounter{secnumdepth}{5}
-$else$
 \setcounter{secnumdepth}{0}
-$endif$
-$if(dir)$
-\ifxetex
-  % load bidi as late as possible as it modifies e.g. graphicx
-  $if(latex-dir-rtl)$
-  \usepackage[RTLdocument]{bidi}
-  $else$
-  \usepackage{bidi}
-  $endif$
-\fi
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \TeXXeTstate=1
-  \newcommand{\RL}[1]{\beginR #1\endR}
-  \newcommand{\LR}[1]{\beginL #1\endL}
-  \newenvironment{RTL}{\beginR}{\endR}
-  \newenvironment{LTR}{\beginL}{\endL}
-\fi
-$endif$
 
-$if(title)$
-\title{$title$}
-$endif$
-$if(subtitle)$
-\subtitle{$subtitle$}
-$endif$
-$if(author)$
-\author{$for(author)$$author$$sep$ \and $endfor$}
-$endif$
-\date{$date$}
-$for(header-includes)$
-$header-includes$
-$endfor$
+\title{An Example R Markdown Document}
+\subtitle{(A Subtitle Would Go Here if This Were a Class)}
+\author{Steven V. Miller}
+\date{}
 
 %% Here's everything I added.
 %%--------------------------
@@ -208,11 +92,11 @@ $endfor$
 % Optional institute tags and titlegraphic.
 % Do feel free to change the titlegraphic if you don't want it as a Markdown field.
 %----------------------------------------------------------------------------------
-$if(institute)$\institute{$institute$}$endif$
+\institute{Department of Political Science}
 
 % \titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~/Dropbox/teaching/clemson-academic.png}} % <-- if you want to know what this looks like without it as a Markdown field. 
 % -----------------------------------------------------------------------------------------------------
-$if(titlegraphic)$\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~$titlegraphic$}}$endif$
+\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~/Dropbox/teaching/clemson-academic.png}}
 
 % Some additional title page adjustments.
 %----------------------------------------
@@ -225,6 +109,7 @@ $if(titlegraphic)$\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~$
 % Some optional colors. Change or add as you see fit.
 %---------------------------------------------------
 \definecolor{clemsonpurple}{HTML}{522D80}
+% \definecolor{clemsonorange}{HTML}{EA6A20}
  \definecolor{clemsonorange}{HTML}{F66733}
 \definecolor{uiucblue}{HTML}{003C7D}
 \definecolor{uiucorange}{HTML}{F47F24}
@@ -289,8 +174,8 @@ $if(titlegraphic)$\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~$
 
 % Adjust some item elements. More cosmetic things.
 %-------------------------------------------------
-\setbeamertemplate{itemize item}{\color{clemsonpurple}$$\bullet$$}
-\setbeamertemplate{itemize subitem}{\color{clemsonpurple}\scriptsize{$$\bullet$$}}
+\setbeamertemplate{itemize item}{\color{clemsonpurple}$\bullet$}
+\setbeamertemplate{itemize subitem}{\color{clemsonpurple}\scriptsize{$\bullet$}}
 \setbeamertemplate{itemize/enumerate body end}{\vspace{.6\baselineskip}} % So I'm less inclined to use \medskip and \bigskip in Markdown.
 
 % Automatically center images
@@ -314,8 +199,8 @@ $if(titlegraphic)$\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~$
 % I could customize/generalize this more but the truth is it works for my circumstances.
 
 \ifxetex
-\setbeamerfont{title}{family=\fontspec{$if(titlefont)$$titlefont$$else$serif$endif$}}
-\setbeamerfont{frametitle}{family=\fontspec{$if(titlefont)$$titlefont$$else$serif$endif$}}
+\setbeamerfont{title}{family=\fontspec{Titillium Web}}
+\setbeamerfont{frametitle}{family=\fontspec{Titillium Web}}
 \usepackage[font=small,skip=0pt]{caption}
  \else
  \fi
@@ -323,47 +208,178 @@ $if(titlegraphic)$\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string~$
 % Okay, and begin the actual document...
 
 \begin{document}
-$if(title)$
 \frame{\titlepage}
-$endif$
 
-$for(include-before)$
-$include-before$
+\hypertarget{pop-songs-and-political-science}{%
+\section{Pop Songs and Political
+Science}\label{pop-songs-and-political-science}}
 
-$endfor$
-$if(toc)$
-\begin{frame}
-\tableofcontents[hideallsubsections]
+\begin{frame}{Sheena Easton and Game Theory}
+\protect\hypertarget{sheena-easton-and-game-theory}{}
+
+Sheena Easton describes the following scenario for her baby:
+
+\begin{enumerate}
+\tightlist
+\item
+  Takes the morning train
+\item
+  Works from nine 'til five
+\item
+  Takes another train home again
+\item
+  Finds Sheena Easton waiting for him
+\end{enumerate}
+
 \end{frame}
 
-$endif$
-$body$
+\begin{frame}{A Total Conflict Game Between Sheena Easton and Her Baby}
+\protect\hypertarget{a-total-conflict-game-between-sheena-easton-and-her-baby}{}
 
-$if(natbib)$
-$if(bibliography)$
-$if(biblio-title)$
-$if(book-class)$
-\renewcommand\bibname{$biblio-title$}
-$else$
-\renewcommand\refname{$biblio-title$}
-$endif$
-$endif$
-\begin{frame}[allowframebreaks]{$biblio-title$}
-\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+& Sheena Easton Stays Home & Sheena Easton Goes to Baby's
+Work\tabularnewline
+\midrule
+\endhead
+\textbf{Baby Home Again} & -100, \textbf{100} & \textbf{100},
+0\tabularnewline
+\textbf{Baby Stays at Work} & \textbf{50}, 0 & -100,
+\textbf{100}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Sheena Easton and her baby are playing a \textbf{zero-sum (total
+conflict) game}.
+
+\begin{itemize}
+\tightlist
+\item
+  Akin to Holmes-Moriarty game (see: von Neumann and Morgenstern)
+\item
+  Solution: \textbf{mixed strategy}
+\end{itemize}
+
 \end{frame}
 
-$endif$
-$endif$
-$if(biblatex)$
-\begin{frame}[allowframebreaks]{$biblio-title$}
-\printbibliography[heading=none]
+\begin{frame}{Rick Astley's Re-election Platform}
+\protect\hypertarget{rick-astleys-re-election-platform}{}
+
+Rick Astley's campaign promises:
+
+\begin{itemize}
+\tightlist
+\item
+  Never gonna give you up.
+\item
+  Never gonna let you down.
+\item
+  Never gonna run around and desert you.
+\item
+  Never gonna make you cry.
+\item
+  Never gonna say goodbye.
+\item
+  Never gonna tell a lie and hurt you.
+\end{itemize}
+
+Are these promises (if credible) sufficient to secure re-election?
+
 \end{frame}
 
-$endif$
-$for(include-after)$
-$include-after$
+\begin{frame}{}
+\protect\hypertarget{section}{}
 
-$endfor$
+\includegraphics{figs/rick-astley-never-gonna-give-you-up-median-voter-theorem.pdf}
+
+\end{frame}
+
+\begin{frame}{Rick Astley and Median Voter Theorem}
+\protect\hypertarget{rick-astley-and-median-voter-theorem}{}
+
+Whereas these pledges conform to the preferences of the \textbf{median
+voter}, we expect Congressman Astley to secure re-election.
+
+\end{frame}
+
+\begin{frame}{Caribbean Queen and Operation Urgent Fury}
+\protect\hypertarget{caribbean-queen-and-operation-urgent-fury}{}
+
+Billy Ocean released ``Caribbean Queen'' in 1984.
+
+\begin{itemize}
+\tightlist
+\item
+  Emphasized sharing the same dream
+\item
+  Hearts beating as one
+\end{itemize}
+
+``Caribbean Queen'' is about the poor execution of Operation Urgent
+Fury.
+
+\begin{itemize}
+\tightlist
+\item
+  Echoed JCS chairman David Jones' frustrations with military
+  establishment.
+\end{itemize}
+
+Billy Ocean is advocating for what became the Goldwater-Nichols Act.
+
+\begin{itemize}
+\tightlist
+\item
+  Wanted to take advantage of \textbf{economies of scale}, resolve
+  \textbf{coordination problems} in U.S. military.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{The Good Day Hypothesis}
+\protect\hypertarget{the-good-day-hypothesis}{}
+
+We know the following about Ice Cube's day.
+
+\begin{enumerate}
+\tightlist
+\item
+  The Lakers beat the Supersonics.
+\item
+  No helicopter looked for a murder.
+\item
+  Consumed Fatburger at 2 a.m.
+\item
+  Goodyear blimp: ``Ice Cube's a pimp.''
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{The Good Day Hypothesis}
+\protect\hypertarget{the-good-day-hypothesis-1}{}
+
+This leads to two different hypotheses:
+
+\begin{itemize}
+\tightlist
+\item
+  \(H_0\): Ice Cube's day is statistically indistinguishable from a
+  typical day.
+\item
+  \(H_1\): Ice Cube is having a good (i.e.~greater than average) day.
+\end{itemize}
+
+These hypotheses are tested using archival data of Ice Cube's life.
+
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-1}{}
+
+\includegraphics{figs/good-day-hypothesis.pdf}
+
+\end{frame}
+
 
 \section[]{}
 \frame{\small \frametitle{Table of Contents}
